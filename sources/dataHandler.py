@@ -18,7 +18,7 @@ class dataHandler(object):
     def getPlottableVersion(self, dataStream):
         if dataStream in self.dataStreams:
             xList = [ x[0] for x in self.dataStreams[dataStream] ]
-            yList = [ y[0] for y in self.dataStreams[dataStream] ]
+            yList = [ y[1] for y in self.dataStreams[dataStream] ]
             return xList, yList
 
             

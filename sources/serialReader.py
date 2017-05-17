@@ -10,10 +10,12 @@ class serialReader(object):
         self.serial = serial.Serial()
         self.serial.baudrate = baudrate
         self.serial.port = com
-        self.open = self.serial.is_open()
+        self.open()
+        self.serial.flush()
+        self.isOpen = self.serial.is_open
 
     def isOpen(self):
-        return self.open()
+        return self.isOpen
 
     def open(self):
         self.serial.open()
@@ -25,6 +27,4 @@ class serialReader(object):
         #read two ints from the com port: accelerometer value, and time
         line = self.serial.readline()
         parts = [int(x) for x in line.strip().split(',')]
-        return { 'time': parts[0],
-                 'acceleration': parts[1]
-               }
+        return {'time': parts[0], 'acceleration':parts[1] }

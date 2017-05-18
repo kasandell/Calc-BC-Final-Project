@@ -25,8 +25,9 @@ if __name__ == '__main__':
             dh.addToDataStream('displacement', ret['displacement'])
 
     except KeyboardInterrupt as k:
+        sr.close()
         xL, yL = dh.getPlottableVersion('acceleration')
         plt.plot(xL, yL, 'ro')
         print min(xL), max(xL), min(yL), max(yL)
-        plt.axis(min(xL), max(xL), min(yL), max(yL))
+        plt.axis([min(xL), max(xL), min(yL), max(yL)])
         plt.show()

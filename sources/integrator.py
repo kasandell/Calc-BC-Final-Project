@@ -53,14 +53,14 @@ class integrator(object):
             #calucluate the small dt to integrate the acceleration into velocity, and the velocity into displacement
             deltaTime = newTime - self.lastTime
 
-            #calculate ∫(a)dt to get change in velocity 
+            #calculate fnInt(a)dt to get change in velocity 
             dVelocity = accelVal * deltaTime
             #update the total velocity of the object
             self.totalVelocity = self.totalVelocity + dVelocity 
             #save the total velocity at this time
             rDict['velocity'] = {'value': self.totalVelocity, 'time': totalElapsedTime}
 
-            #calculuate ∫(v)dt to get change in displacement
+            #calculuate fnInt(v)dt to get change in displacement
             #TODO: if program is erroneous in calculations, it's probably this line. replace total velocity with an average of last velocity and new velocity for better estimate
             dDisplacement = self.totalVelocity * deltaTime
             #update total displacement

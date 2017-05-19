@@ -38,18 +38,10 @@ class systemSolver(object):
     def __getData(self):
         _, acc = self.dh.getPlottableVersion('acceleration')
         _, vel = self.dh.getPlottableVersion('velocity')
-        _, disp = self.dh.getPlottableVersion('displacement')
-        pos = self.__dispToPos(disp)
+        pos = self.dh.getPlottableVersion('position')
         return acc, vel, pos
         
     #whole time program is running, we calculate the displacement, but we really want to have this in terms of position relative to the zero position of the spring, so use first and last values as approximation of spring stretched
-    def __dispToPos(self, dispList):
-        init = dispList[0]
-        fin = dispList[-1]
-        #TODO: check this math. it might be wrong to to absolute value
-        delt = abs(fin-init)
-        dispList = [x+delt for x in dispList]
-        return dispList
 
     def solveSystem(self):
         self.accList, self.velList, self.posList = self.__getData()

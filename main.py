@@ -27,14 +27,12 @@ if __name__ == '__main__':
     except KeyboardInterrupt as k:
         dh.createPositionStream()
         sr.close()
+
         time, acc = dh.getPlottableVersion('acceleration')
-        print 'accel: ', acc
         _, vel = dh.getPlottableVersion('velocity')
-        print 'veloc: ', vel
         _, disp = dh.getPlottableVersion('displacement')
-        print 'disp: ', disp
         _, pos = dh.getPlottableVersion('position')
-        print 'pos: ', pos
+
         minXAxis, maxXAxis = min(time), max(time)
         minAcc, maxAcc = min ( acc ), max(acc)
         minVel, maxVel = min(vel), max(vel)

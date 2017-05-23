@@ -31,8 +31,12 @@ class dataHandler(object):
     def __dispToPos(self):
         init = self.dataStreams['displacement'][0][1]
         fin = self.dataStreams['displacement'][-1][1]
+        print 'fin: ', fin
+        print 'init: ', init
         #TODO: check this math. it might be wrong to to absolute value
         delt = abs(fin-init)
+        print 'delta: ', delt
         posList = [(x[0], x[1]+delt) for x in self.dataStreams['displacement']]
+        print self.dataStreams['displacement'][0], posList[0]
         self.dataStreams['position'] = posList
         return posList

@@ -14,13 +14,15 @@ class systemSolver(object):
         self.springList = []
 
     def __solveOne(self, indexRange):
+        print 'idx range: ', indexRange
         lst = []
         equals = []
         for x in indexRange:
             eq = [self.accList[x], self.velList[x], self.posList[x]]
             lst.append(eq)
             equals.append(0)
-
+        print 'lst: ', lst
+        print 'equals: ', equals
         npList = np.array(lst)
         npEquals = np.array(equals)
         solved = np.linalg.solve(npList, npEquals)
@@ -38,23 +40,26 @@ class systemSolver(object):
     def __getData(self):
         _, acc = self.dh.getPlottableVersion('acceleration')
         _, vel = self.dh.getPlottableVersion('velocity')
-        pos = self.dh.getPlottableVersion('position')
+        _, pos = self.dh.getPlottableVersion('position')
         return acc, vel, pos
         
     #whole time program is running, we calculate the displacement, but we really want to have this in terms of position relative to the zero position of the spring, so use first and last values as approximation of spring stretched
-
+    #TODO: edit to solve random selection of three, so that they are far enough apart to give real coefficients`
     def solveSystem(self):
         self.accList, self.velList, self.posList = self.__getData()
+        print self.accList[0], self.velList[0], self.posList[0]
 
         #zip to prevent going to values that don't exist
-        zipList = zip(self.accList, self.velList, self.dispList)
+        zipList = zip(self.accList, self.velList, self.posList)
 
         for x in xrange(2, len(zipList)):
-            indexRange = range( (x-2), x)
+            print 'x: ', x
+            indexRange = range( (x-2), (x + 1) )
             m, c, k = self.__solveOne(indexRange)
+            print m, c, k
             self.massList.append(m)
             self.dampList.append(c)
-            self.sprintList.append(k)
+            self.springList.append(k)
         #average m, c, and k and return values
         avgMass = sum(self.massList)/len(self.massList)
         avgDamp = sum(self.dampList)/len(self.dampList)

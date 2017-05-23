@@ -13,6 +13,7 @@ class integrator(object):
         self.initTime = 0
         self.totalVelocity = 0
         self.totalDisplacement = 0
+        self.millisToSec = float(1/1000)
 
 
     def setInitTime(self, initTime):
@@ -24,8 +25,8 @@ class integrator(object):
     def integrate(self, accelData):
         if self.initTime is 0:
             #set the initial time this program starts integrating from
-            self.initTime = accelData['time']
-            self.lastTime = accelData['time']
+            self.initTime = accelData['time'] * self.millisToSec
+            self.lastTime = accelData['time'] * self.millisToSec
             #return 0 displacement, velocity, and acceleration
             return {    
                     'acceleration': {
@@ -42,8 +43,9 @@ class integrator(object):
                     }
                 }
         else:
-            newTime = accelData['time']
+            newTime = accelData['time'] * self.millisToSec
             accelVal = accelData['acceleration']
+            print '(' , newTime , ', ' , accelVal, ')'
 
             rDict = {}
             #calculate the total elapsed time since we started running
@@ -55,6 +57,7 @@ class integrator(object):
 
             #calculate fnInt(a)dt to get change in velocity 
             dVelocity = accelVal * deltaTime
+            print 'change in velocity: ', dVelocity
             #update the total velocity of the object
             self.totalVelocity = self.totalVelocity + dVelocity 
             #save the total velocity at this time

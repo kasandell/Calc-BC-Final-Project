@@ -5,6 +5,7 @@ import numpy as np
 from sources.dataHandler import dataHandler 
 from sources.integrator import integrator
 from sources.serialReader import serialReader
+from sources.systemSolver import systemSolver
 
 
 
@@ -27,6 +28,12 @@ if __name__ == '__main__':
     except KeyboardInterrupt as k:
         dh.createPositionStream()
         sr.close()
+
+        sysSolver = systemSolver(dh)
+        mass, dampConst, springConst = sysSolver.solveSystem()
+        print 'Mass: ', mass
+        print 'Damping Constant: ', dampConst
+        print 'Spring Constant: ', springConst
 
         time, acc = dh.getPlottableVersion('acceleration')
         _, vel = dh.getPlottableVersion('velocity')

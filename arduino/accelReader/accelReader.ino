@@ -30,6 +30,7 @@ void loop() {
     sv3 = analogRead(analogPin);
     t = millis();
     val = map(sv3, 0, 1023, -511, 512); 
+    //TODO: maybe adjust so that -1g (aka acceleration due to gravity is the zero point)
     acceleration = (val * 1.0) * unitsToMs;
     Serial.println(String(t) + "," + String(acceleration));
   }

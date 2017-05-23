@@ -9,11 +9,14 @@
 
 class integrator(object):
     def __init__(self):
-        self.lastTime = 0
-        self.initTime = 0
-        self.totalVelocity = 0
-        self.totalDisplacement = 0
-        self.millisToSec = float(1/1000)
+        self.lastTime = 0.0
+        self.initTime = 0.0
+        self.totalVelocity = 0.0
+        self.totalDisplacement = 0.0
+        self.millisToSec = float(1.0/1000.0)
+        self.lastAccel = 0.0
+        self.lastVel = 0.0
+        self.lastDisp = 0.0
 
 
     def setInitTime(self, initTime):
@@ -43,9 +46,8 @@ class integrator(object):
                     }
                 }
         else:
-            newTime = accelData['time'] * self.millisToSec
+            newTime = float(accelData['time'] * self.millisToSec)
             accelVal = accelData['acceleration']
-            print '(' , newTime , ', ' , accelVal, ')'
 
             rDict = {}
             #calculate the total elapsed time since we started running
@@ -56,16 +58,17 @@ class integrator(object):
             deltaTime = newTime - self.lastTime
 
             #calculate fnInt(a)dt to get change in velocity 
-            dVelocity = accelVal * deltaTime
+            dVelocity = (accelVal + self.lastAccel)/2.0 * deltaTime
             print 'change in velocity: ', dVelocity
             #update the total velocity of the object
+            preTotalVel =  self.totalVelocity
             self.totalVelocity = self.totalVelocity + dVelocity 
             #save the total velocity at this time
             rDict['velocity'] = {'value': self.totalVelocity, 'time': totalElapsedTime}
 
             #calculuate fnInt(v)dt to get change in displacement
             #TODO: if program is erroneous in calculations, it's probably this line. replace total velocity with an average of last velocity and new velocity for better estimate
-            dDisplacement = self.totalVelocity * deltaTime
+            dDisplacement = (self.lastAccel + accelVal) / 2.0 * deltaTime * deltaTime#(self.totalVelocity + preTotalVel) / 2.0 * deltaTime
             #update total displacement
             self.totalDisplacement = self.totalDisplacement + dDisplacement
             #save total displacement
@@ -73,4 +76,5 @@ class integrator(object):
             #this is the last time we were at, so integrate from this point next iteration
             self.lastTime = newTime
             #return data 
+            self.lastAccel = accelVal
             return rDict

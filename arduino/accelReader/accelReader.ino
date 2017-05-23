@@ -6,7 +6,7 @@ int buttonState = 0;
 int sv3 = 0;
 int t = 0;
 float acceleration = 0;
-float unitsToMs = (.0049) * (3/1.5) * (9.81/1.000342); // volts/unit * g's/volts * m/s^2/g's
+float unitsToMs = (5.0/1024.0) * (3.0/1.5) * (9.81/1.000/*342*/); // volts/unit * g's/volts * m/s^2/g's
 
 void setup() {
   // put your setup code here, to run once:
@@ -34,5 +34,5 @@ void loop() {
     acceleration = (val * 1.0) * unitsToMs;
     Serial.println(String(t) + "," + String(acceleration));
   }
-  delay(2);
+  delay(10);
 }

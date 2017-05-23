@@ -29,11 +29,11 @@ if __name__ == '__main__':
         dh.createPositionStream()
         sr.close()
 
-        sysSolver = systemSolver(dh)
-        mass, dampConst, springConst = sysSolver.solveSystem()
-        print 'Mass: ', mass
-        print 'Damping Constant: ', dampConst
-        print 'Spring Constant: ', springConst
+        #sysSolver = systemSolver(dh)
+        #mass, dampConst, springConst = sysSolver.solveSystem()
+        #print 'Mass: ', mass
+        #print 'Damping Constant: ', dampConst
+        #print 'Spring Constant: ', springConst
 
         time, acc = dh.getPlottableVersion('acceleration')
         _, vel = dh.getPlottableVersion('velocity')

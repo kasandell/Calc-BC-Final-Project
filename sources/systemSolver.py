@@ -1,5 +1,7 @@
 import dataHandler
 import numpy as np
+import random
+
 
 
 
@@ -51,6 +53,8 @@ class systemSolver(object):
 
         #zip to prevent going to values that don't exist
         zipList = zip(self.accList, self.velList, self.posList)
+        random.shuffle(zipList)
+        random.shuffle(zipList)
 
         for x in xrange(2, len(zipList)):
             print 'x: ', x

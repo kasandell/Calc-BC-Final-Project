@@ -6,6 +6,7 @@ from sources.dataHandler import dataHandler
 from sources.integrator import integrator
 from sources.serialReader import serialReader
 from sources.systemSolver import systemSolver
+from sources.recorder import recorder
 
 
 
@@ -16,14 +17,13 @@ if __name__ == '__main__':
     dh.addDataStream('acceleration')
     dh.addDataStream('velocity')
     dh.addDataStream('displacement')
+    rc = recorder()
     ig = integrator()
     try: 
         while True:
             val = sr.getline()
-            ret = ig.integrate(val);
-            dh.addToDataStream('acceleration', ret['acceleration'])
-            dh.addToDataStream('velocity', ret['velocity'])
-            dh.addToDataStream('displacement', ret['displacement'])
+            adjust = rc.record(val) #adjust accelerationData 
+            dh.addToDataStream('acceleration', adjust)
 
     except KeyboardInterrupt as k:
         dh.createPositionStream()

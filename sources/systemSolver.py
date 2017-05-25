@@ -49,24 +49,27 @@ class systemSolver(object):
     #TODO: edit to solve random selection of three, so that they are far enough apart to give real coefficients`
     def solveSystem(self):
         self.accList, self.velList, self.posList = self.__getData()
-        print self.accList[0], self.velList[0], self.posList[0]
-
-        #zip to prevent going to values that don't exist
-        zipList = zip(self.accList, self.velList, self.posList)
-        random.shuffle(zipList)
-        random.shuffle(zipList)
-
-        for x in xrange(2, len(zipList)):
-            print 'x: ', x
-            indexRange = range( (x-2), (x + 1) )
-            m, c, k = self.__solveOne(indexRange)
-            print m, c, k
+        '''
+        data = np.concatenate( (self.accList[:, np.newaxis], self.velList[:, np.newaxis], self.posList[:, np.newaxis]) , axis=1)
+        print 'data: ', data
+        datamean = data.mean(axis=0)
+        uu, dd, vv = np.linalg.svd(data - datamean)
+        print vv[0]
+        '''
+        mx = max(self.accList)
+        mn = min(self.accList)
+        deltIdx = abs( self.accList.index(mn)  - self.accList.index(mx) )
+        for x in range(0, len(self.accList) - deltIdx): 
+            vals = (x, x + (deltIdx/2), x + deltIdx)
+            m, c, k = self.__solveOne(vals)
             self.massList.append(m)
-            self.dampList.append(c)
             self.springList.append(k)
-        #average m, c, and k and return values
+            self.dampList.append(c)
         avgMass = sum(self.massList)/len(self.massList)
-        avgDamp = sum(self.dampList)/len(self.dampList)
         avgSpring = sum(self.springList)/len(self.springList)
+        avgDamp = sum(self.dampList)/len(self.dampList)
         return avgMass, avgDamp, avgSpring
+        
+        
+
 

@@ -23,5 +23,4 @@ class dataHandler(object):
             return xList, yList
 
     def setDataStream(self, dataStream, xList, yList):
-        if dataStream in self.dataStreams:
-            self.dataStreams[dataStream] = zip(xList, yList)
+        self.dataStreams[dataStream] = zip(xList, yList)

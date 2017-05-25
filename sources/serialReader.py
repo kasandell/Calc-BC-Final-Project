@@ -13,7 +13,7 @@ class serialReader(object):
         self.open()
         self.serial.flush()
         self.isOpen = self.serial.is_open
-        self.accelAdjustment = -9.77 #close to gravity but not perfect
+        self.accelAdjustment = -9.81
 
     def isOpen(self):
         return self.isOpen
@@ -28,6 +28,6 @@ class serialReader(object):
         #read two ints from the com port: accelerometer value, and time
         line = self.serial.readline()
         parts = [float(x) for x in line.strip().split(',')]
-        dct = {'time': parts[0], 'acceleration':float(parts[1] - self.accelAdjustment) }
+        dct = {'time': parts[0], 'acceleration':float( format( (1000 * (parts[1] - self.accelAdjustment) - -730.0 -10.0), '.4f')) }
         print 'read: ', dct
         return dct

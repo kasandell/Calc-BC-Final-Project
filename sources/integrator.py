@@ -15,16 +15,27 @@ class integrator(object):
         time, acc = self.dh.getPlottableVersion('acceleration')
 
         veloc = integrate.cumtrapz(acc, time, initial=0)
+        vAvg = float(sum(veloc)/len(veloc)/(time[-1]-time[0]))
+        #veloc = [x for x in veloc]
+        veloc1 = [float(format(x, '.2f')) for x in veloc]
         self.dh.addDataStream('velocity')
-        self.dh.setDataStream('velocity', time, veloc)
+        self.dh.setDataStream('velocity', time, veloc1)
 
 
         disp = integrate.cumtrapz(veloc, time, initial=0)
         self.dh.addDataStream('displacement')
         self.dh.setDataStream('displacement', time,  disp)
+        t, p = self.__adjust()
+        self.dh.setDataStream('position', t, p)
         return self.dh
 
     def __adjust(self): #adjust values
+        time, dst = self.dh.getPlottableVersion('displacement')
+        init, fin = dst[0], dst[-1]
+        offset = abs(fin-init)
+        pos = [float(format( (x + offset), '.2f')) for x in dst]
+        return time, pos
+
         '''
         shift acceleration graph, since we start with max accceleration, and it has 0 when at eq pos
         velocity should be fine
